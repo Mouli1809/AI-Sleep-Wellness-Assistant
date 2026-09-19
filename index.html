@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI SLEEP WELLNESS - AI Powered Sleep Wellness Assistant Advanced</title>
+    <meta name="description" content="Advanced AI-powered sleep wellness assistant featuring 6 pages: Dashboard, Analytics, AI Insights, Relaxation, Sleep Journal, and Settings.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main CSS stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+    <!-- Aurora & Starfield Animated Backdrop -->
+    <div class="stars-backdrop"></div>
+    <div class="aurora-glow aurora-1"></div>
+    <div class="aurora-glow aurora-2"></div>
+
+    <!-- Night Shift Red Tint Filter Overlay (Toggleable in Settings) -->
+    <div id="night-shift-overlay" class="night-shift-overlay hidden"></div>
+
+    <div class="app-container">
+        <!-- Top Navigation Header -->
+        <header class="app-header">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-moon"></i>
+                    <div class="logo-sparkle"></div>
+                </div>
+                <div class="brand-text">
+                    <h1>Slepping <span class="badge-ai">AI PRO</span></h1>
+                    <p class="tagline">Advanced Sleep Wellness & Circadian Intelligence</p>
+                </div>
+            </div>
+
+            <!-- Header Status Indicator -->
+            <div class="header-status-card">
+                <div class="status-indicator active"></div>
+                <div class="status-info">
+                    <span class="status-label" id="current-phase-label">Circadian Phase: Melatonin Surge</span>
+                    <span class="status-sub" id="live-clock">10:45 PM • Optimal Wind-down Time</span>
+                </div>
+            </div>
+
+            <!-- Nav Tabs (6 Full Pages) -->
+            <nav class="main-nav">
+                <button class="nav-btn active" data-tab="dashboard" id="nav-dashboard">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-btn" data-tab="analytics" id="nav-analytics">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span>Analytics</span>
+                </button>
+                <button class="nav-btn" data-tab="ai-insights" id="nav-ai-insights">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>AI Insights</span>
+                </button>
+                <button class="nav-btn" data-tab="relaxation" id="nav-relaxation">
+                    <i class="fa-solid fa-headphones"></i>
+                    <span>Relaxation</span>
+                </button>
+                <button class="nav-btn" data-tab="journal" id="nav-journal">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                    <span>Sleep Journal</span>
+                </button>
+                <button class="nav-btn" data-tab="settings" id="nav-settings">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </button>
+            </nav>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+
+            <!-- ========================================================================== -->
+            <!-- PAGE 1: DASHBOARD OVERVIEW -->
+            <!-- ========================================================================== -->
+            <section id="tab-dashboard" class="tab-page active">
+                <!-- Welcome Banner -->
+                <div class="welcome-banner glass-card">
+                    <div class="welcome-text">
+                        <h2>Good Evening, <span class="user-highlight" id="greeting-username">Rest Explorer</span> 👋</h2>
+                        <p>Your sleep quality score increased by <strong class="text-emerald">+12%</strong> this week. Pineal melatonin levels are naturally surging.</p>
+                    </div>
+                    <div class="banner-quick-actions">
+                        <button class="action-chip" onclick="app.switchTab('relaxation'); app.startBreathing();">
+                            <i class="fa-solid fa-wind"></i> Quick 4-7-8 Relax
+                        </button>
+                        <button class="action-chip" onclick="app.switchTab('ai-insights');">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Consult AI Coach
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Metrics Grid -->
+                <div class="metrics-grid">
+                    <!-- Sleep Score Card -->
+                    <div class="glass-card metric-card score-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-shield-heart text-purple"></i> Sleep Quality Score</h3>
+                            <span class="badge badge-success">Optimal</span>
+                        </div>
+                        <div class="score-body">
+                            <div class="score-ring-container">
+                                <svg class="score-ring" viewBox="0 0 120 120">
+                                    <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+                                    <circle class="ring-progress" id="score-ring-bar" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="39.2"></circle>
+                                </svg>
+                                <div class="score-number-wrapper">
+                                    <span class="score-val" id="sleep-score-val">88</span>
+                                    <span class="score-max">/100</span>
+                                </div>
+                            </div>
+                            <div class="score-meta">
+                                <div class="meta-item">
+                                    <span class="meta-label">RECOVERY</span>
+                                    <span class="meta-val text-cyan" id="dash-recovery-val">94% High</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">LATENCY</span>
+                                    <span class="meta-val text-emerald" id="dash-latency-val">12 mins</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Duration Card -->
+                    <div class="glass-card metric-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-bed text-indigo"></i> Sleep Duration</h3>
+                            <span class="text-sub" id="dash-target-label">Target: 8h 00m</span>
+                        </div>
+                        <div class="metric-main">
+                            <div class="metric-big">7<span class="unit">h</span> 48<span class="unit">m</span></div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill fill-indigo" style="width: 97.5%;"></div>
+                            </div>
+                            <p class="metric-sub-text"><i class="fa-solid fa-circle-check text-emerald"></i> Within your ideal 90-min sleep cycle window.</p>
+                        </div>
+                    </div>
+
+                    <!-- HRV & Restfulness -->
+                    <div class="glass-card metric-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-wave-square text-cyan"></i> HRV & Restfulness</h3>
+                            <span class="badge badge-info">Balanced</span>
+                        </div>
+                        <div class="metric-main">
+                            <div class="metric-big text-cyan">68 <span class="unit">ms</span></div>
+                            <div class="mini-sparkline">
+                                <div class="spark-bar" style="height: 40%"></div>
+                                <div class="spark-bar" style="height: 60%"></div>
+                                <div class="spark-bar" style="height: 55%"></div>
+                                <div class="spark-bar" style="height: 80%"></div>
+                                <div class="spark-bar" style="height: 70%"></div>
+                                <div class="spark-bar active" style="height: 90%"></div>
+                            </div>
+                            <p class="metric-sub-text">Autonomic nervous system in optimal restorative state.</p>
+                        </div>
+                    </div>
+
+                    <!-- Bedroom Climate Index -->
+                    <div class="glass-card metric-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-temperature-half text-amber"></i> Bedroom Climate</h3>
+                            <span class="badge badge-warning">Action Needed</span>
+                        </div>
+                        <div class="metric-main">
+                            <div class="climate-values">
+                                <div class="climate-pill"><i class="fa-solid fa-temperature-three-quarters text-amber"></i> <span id="dash-temp-val">67.5°F</span></div>
+                                <div class="climate-pill"><i class="fa-solid fa-droplet text-cyan"></i> <span id="dash-humidity-val">48%</span></div>
+                                <div class="climate-pill"><i class="fa-solid fa-volume-xmark text-emerald"></i> <span id="dash-noise-val">28 dB</span></div>
+                            </div>
+                            <p class="metric-sub-text mt-2"><i class="fa-solid fa-lightbulb text-amber"></i> AI Tip: Lower room temp by 1.5°F to boost Deep Sleep duration.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sleep Stage Interactive Timeline -->
+                <div class="glass-card timeline-card">
+                    <div class="card-header flex-between">
+                        <div>
+                            <h3><i class="fa-solid fa-chart-area text-purple"></i> Nightly Sleep Architecture Breakdown</h3>
+                            <p class="text-sub">Continuous stage tracking: Awake, REM, Light, and Deep sleep (11:00 PM - 7:00 AM)</p>
+                        </div>
+                        <div class="timeline-legend">
+                            <span class="legend-item"><span class="dot awake"></span> Awake (5%)</span>
+                            <span class="legend-item"><span class="dot rem"></span> REM (24%)</span>
+                            <span class="legend-item"><span class="dot light"></span> Light (48%)</span>
+                            <span class="legend-item"><span class="dot deep"></span> Deep (23%)</span>
+                        </div>
+                    </div>
+
+                    <!-- SVG Chart -->
+                    <div class="chart-container" id="sleep-chart-wrapper">
+                        <svg class="sleep-timeline-svg" viewBox="0 0 800 240" id="sleep-svg-graph">
+                            <line x1="60" y1="40" x2="780" y2="40" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4" />
+                            <line x1="60" y1="90" x2="780" y2="90" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4" />
+                            <line x1="60" y1="140" x2="780" y2="140" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4" />
+                            <line x1="60" y1="190" x2="780" y2="190" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4" />
+
+                            <text x="10" y="44" fill="#F59E0B" font-size="11" font-weight="600">Awake</text>
+                            <text x="10" y="94" fill="#06B6D4" font-size="11" font-weight="600">REM</text>
+                            <text x="10" y="144" fill="#818CF8" font-size="11" font-weight="600">Light</text>
+                            <text x="10" y="194" fill="#A855F7" font-size="11" font-weight="600">Deep</text>
+
+                            <defs>
+                                <linearGradient id="sleepGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.5"/>
+                                    <stop offset="100%" stop-color="#06B6D4" stop-opacity="0.05"/>
+                                </linearGradient>
+                            </defs>
+
+                            <path class="chart-area" fill="url(#sleepGrad)" d="M 60 40 L 75 40 L 90 140 L 140 190 L 190 140 L 230 90 L 280 140 L 320 190 L 370 140 L 410 90 L 470 140 L 520 190 L 580 140 L 630 90 L 690 140 L 730 40 L 780 40 L 780 210 L 60 210 Z"></path>
+                            <path class="chart-line" fill="none" stroke="#8B5CF6" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" d="M 60 40 L 75 40 L 90 140 L 140 190 L 190 140 L 230 90 L 280 140 L 320 190 L 370 140 L 410 90 L 470 140 L 520 190 L 580 140 L 630 90 L 690 140 L 730 40 L 780 40"></path>
+
+                            <circle class="chart-point awake" cx="67" cy="40" r="5" data-info="11:05 PM - Initial Latency (Awake 12m)"></circle>
+                            <circle class="chart-point deep" cx="140" cy="190" r="5" data-info="12:15 AM - Deep Sleep Stage 3 (Delta wave burst)"></circle>
+                            <circle class="chart-point rem" cx="230" cy="90" r="5" data-info="01:45 AM - Cycle 1 REM Sleep (Dream state)"></circle>
+                            <circle class="chart-point deep" cx="320" cy="190" r="5" data-info="03:10 AM - Physical Cellular Repair Phase"></circle>
+                            <circle class="chart-point rem" cx="410" cy="90" r="5" data-info="04:30 AM - Cycle 3 Extended REM"></circle>
+                            <circle class="chart-point rem" cx="630" cy="90" r="5" data-info="06:15 AM - Cycle 4 Memory Consolidation REM"></circle>
+
+                            <text x="60" y="225" fill="#64748B" font-size="11">11:00 PM</text>
+                            <text x="150" y="225" fill="#64748B" font-size="11">12:00 AM</text>
+                            <text x="240" y="225" fill="#64748B" font-size="11">01:00 AM</text>
+                            <text x="330" y="225" fill="#64748B" font-size="11">02:00 AM</text>
+                            <text x="420" y="225" fill="#64748B" font-size="11">03:00 AM</text>
+                            <text x="510" y="225" fill="#64748B" font-size="11">04:00 AM</text>
+                            <text x="600" y="225" fill="#64748B" font-size="11">05:00 AM</text>
+                            <text x="690" y="225" fill="#64748B" font-size="11">06:00 AM</text>
+                            <text x="770" y="225" fill="#64748B" font-size="11">07:00 AM</text>
+                        </svg>
+                        <div id="chart-tooltip" class="chart-tooltip hidden"></div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ========================================================================== -->
+            <!-- PAGE 2: ANALYTICS (CUSTOM CANVAS CHARTS & TREND ANALYSIS) -->
+            <!-- ========================================================================== -->
+            <section id="tab-analytics" class="tab-page">
+                <div class="analytics-grid">
+                    <!-- 7-Day Sleep Score Bar Chart (Custom Canvas) -->
+                    <div class="glass-card chart-card-lg">
+                        <div class="card-header flex-between">
+                            <div>
+                                <h3><i class="fa-solid fa-chart-bar text-cyan"></i> 7-Day Sleep Quality Score Trend</h3>
+                                <p class="text-sub">Daily sleep efficiency score vs. target goal (85+)</p>
+                            </div>
+                            <span class="badge badge-success">7-Day Avg: 86.4</span>
+                        </div>
+                        <div class="canvas-wrapper">
+                            <canvas id="canvas-7day-scores" width="700" height="240"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Sleep Stage Distribution Ratio (Canvas Donut / Bar) -->
+                    <div class="glass-card chart-card-md">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-chart-pie text-purple"></i> Sleep Stage Ratios</h3>
+                            <p class="text-sub">Recommended ratio breakdown</p>
+                        </div>
+                        <div class="canvas-wrapper flex-center">
+                            <canvas id="canvas-stage-donut" width="260" height="220"></canvas>
+                        </div>
+                        <div class="stage-ratio-legend">
+                            <div class="ratio-item"><span class="dot deep"></span> Deep: 23% (Ideal: 20-25%)</div>
+                            <div class="ratio-item"><span class="dot rem"></span> REM: 24% (Ideal: 20-25%)</div>
+                            <div class="ratio-item"><span class="dot light"></span> Light: 48% (Ideal: 45-55%)</div>
+                            <div class="ratio-item"><span class="dot awake"></span> Awake: 5% (Ideal: <10%)</div>
+                        </div>
+                    </div>
+
+                    <!-- 14-Day HRV & Sleep Latency Dual Line Chart -->
+                    <div class="glass-card chart-card-lg">
+                        <div class="card-header flex-between">
+                            <div>
+                                <h3><i class="fa-solid fa-heart-pulse text-rose"></i> 14-Day HRV & Sleep Onset Latency</h3>
+                                <p class="text-sub">Heart Rate Variability (ms) vs time to fall asleep (minutes)</p>
+                            </div>
+                            <div class="curve-legend">
+                                <span class="legend-item"><span class="dot" style="background:#06B6D4;"></span> HRV (ms)</span>
+                                <span class="legend-item"><span class="dot" style="background:#F59E0B;"></span> Latency (mins)</span>
+                            </div>
+                        </div>
+                        <div class="canvas-wrapper">
+                            <canvas id="canvas-hrv-latency" width="700" height="220"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Sleep Consistency Summary Card -->
+                    <div class="glass-card consistency-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-scale-balanced text-emerald"></i> Circadian Consistency Score</h3>
+                        </div>
+                        <div class="consistency-body">
+                            <div class="consistency-score-big text-emerald">92<span class="unit">/100</span></div>
+                            <p class="text-sub">Your sleep schedule variability is low (± 14 minutes).</p>
+                            <div class="consistency-metrics mt-3">
+                                <div class="c-metric-row">
+                                    <span>Avg Bedtime:</span>
+                                    <strong class="text-primary">10:48 PM</strong>
+                                </div>
+                                <div class="c-metric-row">
+                                    <span>Avg Wake Time:</span>
+                                    <strong class="text-primary">06:34 AM</strong>
+                                </div>
+                                <div class="c-metric-row">
+                                    <span>Social Jetlag:</span>
+                                    <strong class="text-emerald">Minimal (18m)</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ========================================================================== -->
+            <!-- PAGE 3: AI INSIGHTS & DR. SOMNIA COACH -->
+            <!-- ========================================================================== -->
+            <section id="tab-ai-insights" class="tab-page">
+                <div class="ai-insights-grid">
+                    <!-- Chatbot Interface -->
+                    <div class="chat-wrapper glass-card">
+                        <!-- Chat Header -->
+                        <div class="chat-header flex-between">
+                            <div class="chat-bot-profile">
+                                <div class="avatar-container">
+                                    <div class="bot-avatar">
+                                        <i class="fa-solid fa-user-doctor"></i>
+                                    </div>
+                                    <span class="online-dot"></span>
+                                </div>
+                                <div class="bot-info">
+                                    <h3>Dr. Somnia <span class="badge badge-purple"><i class="fa-solid fa-certificate"></i> CBT-I Specialist</span></h3>
+                                    <p class="bot-status">Powered by Sleep Neuroscience & Circadian Algorithms</p>
+                                </div>
+                            </div>
+                            <button class="btn-sm btn-outline" onclick="app.clearChat()"><i class="fa-solid fa-trash-can"></i> Clear History</button>
+                        </div>
+
+                        <!-- Prompt Chips -->
+                        <div class="prompt-chips-wrapper">
+                            <span class="chips-label"><i class="fa-solid fa-lightbulb text-amber"></i> Quick Ask:</span>
+                            <div class="prompt-chips">
+                                <button class="chip-btn" onclick="app.sendQuickPrompt('Why do I wake up around 3 AM every night?')">Wake up at 3 AM?</button>
+                                <button class="chip-btn" onclick="app.sendQuickPrompt('Calculate my ideal caffeine cutoff time for 11 PM bedtime')">Caffeine Cutoff</button>
+                                <button class="chip-btn" onclick="app.sendQuickPrompt('How do I optimize my deep sleep REM ratio?')">Optimize Deep Sleep</button>
+                                <button class="chip-btn" onclick="app.sendQuickPrompt('What is CBT-I sleep restriction and is it right for me?')">CBT-I Strategy</button>
+                                <button class="chip-btn" onclick="app.sendQuickPrompt('How do I calm a racing mind before sleeping?')">Racing Mind Routine</button>
+                            </div>
+                        </div>
+
+                        <!-- Chat Messages Log -->
+                        <div class="chat-messages" id="chat-messages-container">
+                            <div class="chat-message bot-message">
+                                <div class="message-avatar"><i class="fa-solid fa-user-doctor"></i></div>
+                                <div class="message-content">
+                                    <p>Hello! I am <strong>Dr. Somnia</strong>, your AI Sleep Wellness Assistant trained on circadian neuroscience and CBT-I (Cognitive Behavioral Therapy for Insomnia).</p>
+                                    <p>How can I help optimize your sleep efficiency, daytime energy, or wind-down routine tonight?</p>
+                                    <span class="message-time">Just now</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Input Form -->
+                        <form class="chat-input-form" id="chat-form" onsubmit="app.handleChatSubmit(event)">
+                            <input type="text" id="chat-input" placeholder="Ask Dr. Somnia anything about your sleep quality, circadian rhythms, or dreams..." autocomplete="off">
+                            <button type="submit" class="btn-send" id="btn-chat-send">
+                                <span>Send</span>
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- 24-Hour Circadian Rhythm & 90-Min Calculator Side Card -->
+                    <div class="glass-card circadian-side-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-sun-plant-wilt text-amber"></i> 24-Hour Circadian Rhythm Curve</h3>
+                            <p class="text-sub">Melatonin vs Cortisol peak curves</p>
+                        </div>
+                        <div class="chart-container">
+                            <svg class="circadian-svg" viewBox="0 0 500 180" id="circadian-svg-chart">
+                                <line x1="40" y1="40" x2="480" y2="40" stroke="rgba(255,255,255,0.06)" />
+                                <line x1="40" y1="90" x2="480" y2="90" stroke="rgba(255,255,255,0.06)" />
+                                <line x1="40" y1="140" x2="480" y2="140" stroke="rgba(255,255,255,0.06)" />
+
+                                <!-- Cortisol Curve -->
+                                <path fill="none" stroke="#F59E0B" stroke-width="3" d="M 40 140 C 100 140, 150 30, 220 30 C 300 30, 360 100, 420 130 C 460 140, 470 140, 480 130" />
+                                <!-- Melatonin Curve -->
+                                <path fill="none" stroke="#06B6D4" stroke-width="3" d="M 40 60 C 100 50, 160 140, 240 140 C 320 140, 400 60, 450 30 C 470 30, 475 40, 480 60" />
+
+                                <line x1="410" y1="15" x2="410" y2="155" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="3" />
+                                <circle cx="410" cy="40" r="5" fill="#8B5CF6" />
+                                <text x="380" y="10" fill="#8B5CF6" font-size="10" font-weight="700">NOW (10:45 PM)</text>
+
+                                <text x="40" y="170" fill="#64748B" font-size="10">6 AM</text>
+                                <text x="150" y="170" fill="#64748B" font-size="10">12 PM</text>
+                                <text x="260" y="170" fill="#64748B" font-size="10">6 PM</text>
+                                <text x="380" y="170" fill="#8B5CF6" font-size="10" font-weight="700">11 PM</text>
+                                <text x="450" y="170" fill="#64748B" font-size="10">4 AM</text>
+                            </svg>
+                        </div>
+
+                        <!-- 90-Minute Calculator -->
+                        <div class="calculator-form mt-4">
+                            <h4><i class="fa-solid fa-calculator text-cyan"></i> 90-Min Sleep Cycle Optimizer</h4>
+                            <div class="calc-mode-selector mt-2">
+                                <button class="btn-toggle active" id="calc-mode-wake" onclick="app.setCalcMode('wake')">Wake up at...</button>
+                                <button class="btn-toggle" id="calc-mode-sleep" onclick="app.setCalcMode('sleep')">Sleep at...</button>
+                            </div>
+                            <div class="time-input-group mt-2">
+                                <input type="time" id="target-time-input" value="07:00" onchange="app.calculateSleepCycles()">
+                            </div>
+                            <div class="cycle-results" id="cycle-results-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ========================================================================== -->
+            <!-- PAGE 4: RELAXATION (AUDIO MIXER & 4-7-8 BREATHING) -->
+            <!-- ========================================================================== -->
+            <section id="tab-relaxation" class="tab-page">
+                <div class="sanctuary-grid">
+                    <!-- Ambient Sound Mixer -->
+                    <div class="glass-card soundscapes-card">
+                        <div class="card-header flex-between">
+                            <div>
+                                <h3><i class="fa-solid fa-compact-disc text-cyan"></i> Ambient Soundscape Generator</h3>
+                                <p class="text-sub">Real-time synthesized acoustic masking & binaural frequencies</p>
+                            </div>
+                            <div class="sound-status-badge" id="sound-status-badge">
+                                <span class="dot"></span> <span id="playing-sound-name">Audio Standby</span>
+                            </div>
+                        </div>
+
+                        <!-- Soundscape Selector Cards -->
+                        <div class="soundscape-grid">
+                            <div class="sound-card active" onclick="app.selectSound('binaural')" id="sound-card-binaural">
+                                <div class="sound-icon text-purple"><i class="fa-solid fa-brain"></i></div>
+                                <h4>432Hz Binaural Delta</h4>
+                                <p>Deep sleep brainwave synchronization (0.5 - 4 Hz)</p>
+                            </div>
+                            <div class="sound-card" onclick="app.selectSound('rain')" id="sound-card-rain">
+                                <div class="sound-icon text-cyan"><i class="fa-solid fa-cloud-rain"></i></div>
+                                <h4>Midnight Rainstorm</h4>
+                                <p>Soft organic raindrop filtering & rhythmic acoustics</p>
+                            </div>
+                            <div class="sound-card" onclick="app.selectSound('pink')" id="sound-card-pink">
+                                <div class="sound-icon text-emerald"><i class="fa-solid fa-sliders"></i></div>
+                                <h4>Deep Pink Noise</h4>
+                                <p>Equal energy per octave for blocking ambient noise</p>
+                            </div>
+                            <div class="sound-card" onclick="app.selectSound('space')" id="sound-card-space">
+                                <div class="sound-icon text-amber"><i class="fa-solid fa-shuttle-space"></i></div>
+                                <h4>Cosmic Drone</h4>
+                                <p>Low-frequency resonant ambient space hum</p>
+                            </div>
+                        </div>
+
+                        <!-- Control Panel -->
+                        <div class="audio-controls-panel">
+                            <button class="btn-play-master" id="master-play-btn" onclick="app.toggleSoundPlay()">
+                                <i class="fa-solid fa-play" id="play-btn-icon"></i>
+                            </button>
+                            <div class="volume-slider-group">
+                                <i class="fa-solid fa-volume-low text-sub"></i>
+                                <input type="range" id="sound-volume" min="0" max="100" value="70" oninput="app.setVolume(this.value)">
+                                <i class="fa-solid fa-volume-high text-sub"></i>
+                            </div>
+                            <div class="timer-dropdown">
+                                <label><i class="fa-solid fa-hourglass-half text-amber"></i> Timer:</label>
+                                <select id="sleep-timer-select" onchange="app.setSleepTimer(this.value)">
+                                    <option value="off">Off</option>
+                                    <option value="15">15 Mins</option>
+                                    <option value="30" selected>30 Mins</option>
+                                    <option value="60">60 Mins</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Canvas Spectrum Visualizer -->
+                        <div class="visualizer-container">
+                            <canvas id="audio-visualizer-canvas" width="600" height="70"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- 4-7-8 Breathing Circle -->
+                    <div class="glass-card breathing-card">
+                        <div class="card-header text-center">
+                            <h3><i class="fa-solid fa-lungs text-purple"></i> Guided 4-7-8 Breathing Circle</h3>
+                            <p class="text-sub">Inhale 4s • Hold 7s • Exhale 8s to calm vagus nerve</p>
+                        </div>
+
+                        <div class="breathing-stage">
+                            <div class="breathing-ring-outer" id="breathing-ring">
+                                <div class="breathing-ring-inner">
+                                    <span class="breathing-instruction" id="breathing-text">Ready</span>
+                                    <span class="breathing-timer" id="breathing-countdown">--</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="breathing-controls text-center">
+                            <button class="btn-primary" id="btn-breathing-toggle" onclick="app.toggleBreathing()">
+                                <i class="fa-solid fa-play"></i> Start 4-7-8 Session
+                            </button>
+                            <div class="cycles-counter mt-2">
+                                Completed Cycles: <strong id="breathing-cycles-count" class="text-cyan">0</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ========================================================================== -->
+            <!-- PAGE 5: SLEEP JOURNAL & CLIMATE AUDIT -->
+            <!-- ========================================================================== -->
+            <section id="tab-journal" class="tab-page">
+                <div class="env-journal-grid">
+                    <!-- Bedroom Climate Scanner -->
+                    <div class="glass-card environment-card">
+                        <div class="card-header flex-between">
+                            <div>
+                                <h3><i class="fa-solid fa-house-laptop text-emerald"></i> Bedroom Environment Audit</h3>
+                                <p class="text-sub">Adjust room climate sliders for live optimization analysis</p>
+                            </div>
+                            <div class="env-score-pill">
+                                Room Score: <strong id="env-score-val" class="text-emerald">85%</strong>
+                            </div>
+                        </div>
+
+                        <div class="sliders-group">
+                            <div class="slider-item">
+                                <div class="slider-label">
+                                    <span><i class="fa-solid fa-temperature-half text-amber"></i> Temperature</span>
+                                    <strong id="val-temp">67.5 °F</strong>
+                                </div>
+                                <input type="range" id="slider-temp" min="60" max="78" step="0.5" value="67.5" oninput="app.updateEnvAudit()">
+                            </div>
+                            <div class="slider-item">
+                                <div class="slider-label">
+                                    <span><i class="fa-solid fa-droplet text-cyan"></i> Relative Humidity</span>
+                                    <strong id="val-humidity">48 %</strong>
+                                </div>
+                                <input type="range" id="slider-humidity" min="20" max="80" step="1" value="48" oninput="app.updateEnvAudit()">
+                            </div>
+                            <div class="slider-item">
+                                <div class="slider-label">
+                                    <span><i class="fa-solid fa-sun text-amber"></i> Ambient Light</span>
+                                    <strong id="val-light">5 Lux</strong>
+                                </div>
+                                <input type="range" id="slider-light" min="0" max="100" step="1" value="5" oninput="app.updateEnvAudit()">
+                            </div>
+                            <div class="slider-item">
+                                <div class="slider-label">
+                                    <span><i class="fa-solid fa-volume-high text-indigo"></i> Background Noise</span>
+                                    <strong id="val-noise">28 dB</strong>
+                                </div>
+                                <input type="range" id="slider-noise" min="15" max="70" step="1" value="28" oninput="app.updateEnvAudit()">
+                            </div>
+                        </div>
+
+                        <div class="env-ai-advice" id="env-ai-advice-box">
+                            <i class="fa-solid fa-wand-magic-sparkles text-purple"></i>
+                            <span id="env-advice-text">Your room conditions are optimal for entering stage 3 deep sleep quickly.</span>
+                        </div>
+                    </div>
+
+                    <!-- Journal Logger -->
+                    <div class="glass-card journal-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-book-bookmark text-purple"></i> Nightly Sleep & Dream Journal</h3>
+                            <p class="text-sub">Log lifestyle factors, dream recall, and morning feel</p>
+                        </div>
+
+                        <form class="journal-form" id="journal-form" onsubmit="app.saveJournalEntry(event)">
+                            <div class="form-group">
+                                <label>Morning Mood & Energy Rating:</label>
+                                <div class="star-rating">
+                                    <button type="button" class="star-btn active" data-rating="1" onclick="app.setRating(1)">⭐</button>
+                                    <button type="button" class="star-btn active" data-rating="2" onclick="app.setRating(2)">⭐</button>
+                                    <button type="button" class="star-btn active" data-rating="3" onclick="app.setRating(3)">⭐</button>
+                                    <button type="button" class="star-btn active" data-rating="4" onclick="app.setRating(4)">⭐</button>
+                                    <button type="button" class="star-btn" data-rating="5" onclick="app.setRating(5)">⭐</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Disruptors Experienced:</label>
+                                <div class="tags-selector">
+                                    <label class="tag-chip"><input type="checkbox" value="Late Caffeine" id="tag-caffeine"> ☕ Late Caffeine</label>
+                                    <label class="tag-chip"><input type="checkbox" value="Late Alcohol" id="tag-alcohol"> 🍷 Late Alcohol</label>
+                                    <label class="tag-chip"><input type="checkbox" value="Late Screen" id="tag-screen"> 📱 Screen &lt;30m</label>
+                                    <label class="tag-chip"><input type="checkbox" value="Heavy Meal" id="tag-meal"> 🍕 Heavy Meal</label>
+                                    <label class="tag-chip"><input type="checkbox" value="High Stress" id="tag-stress"> 🤯 High Stress</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dream-note">Dream Journal Notes:</label>
+                                <textarea id="dream-note" rows="3" placeholder="Log any memorable vivid dreams or wake-up thoughts..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-primary w-100"><i class="fa-solid fa-floppy-disk"></i> Save Journal Entry</button>
+                        </form>
+
+                        <div class="journal-history-container mt-4">
+                            <h4>Recent Entries (<span id="journal-count">0</span>)</h4>
+                            <div class="journal-history-list" id="journal-history-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ========================================================================== -->
+            <!-- PAGE 6: SETTINGS & PREFERENCES -->
+            <!-- ========================================================================== -->
+            <section id="tab-settings" class="tab-page">
+                <div class="settings-grid">
+                    <!-- Sleep Target & Profile Preferences -->
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-sliders text-cyan"></i> Personal Sleep Goals & Targets</h3>
+                            <p class="text-sub">Customize baseline goals for sleep algorithms</p>
+                        </div>
+                        <form onsubmit="app.saveSettings(event)" class="settings-form">
+                            <div class="form-group">
+                                <label for="setting-username">Display Name:</label>
+                                <input type="text" id="setting-username" value="Rest Explorer" class="settings-input">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="setting-target-hours">Target Sleep Duration (Hours):</label>
+                                <input type="number" id="setting-target-hours" min="5" max="11" step="0.5" value="8.0" class="settings-input">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="setting-bedtime">Target Bedtime Goal:</label>
+                                <input type="time" id="setting-bedtime" value="22:45" class="settings-input">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="setting-chronotype">Chronotype Profile:</label>
+                                <select id="setting-chronotype" class="settings-input">
+                                    <option value="bear" selected>Bear (Sun follower • Most common)</option>
+                                    <option value="lion">Lion (Early riser • Peak morning energy)</option>
+                                    <option value="wolf">Wolf (Night owl • Peak evening focus)</option>
+                                    <option value="dolphin">Dolphin (Light sleeper • Variable schedule)</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn-primary"><i class="fa-solid fa-check"></i> Save Target Preferences</button>
+                        </form>
+                    </div>
+
+                    <!-- Display & Nighttime Preferences -->
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-moon text-purple"></i> Nighttime Display Preferences</h3>
+                            <p class="text-sub">Circadian friendly UI adjustments</p>
+                        </div>
+                        <div class="settings-toggle-group">
+                            <div class="toggle-row">
+                                <div>
+                                    <strong class="text-primary">Red Tint Night Filter (Melatonin Protect)</strong>
+                                    <p class="text-sub" style="font-size:12px;">Applies warm amber filter over screen to reduce blue wavelength exposure.</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="toggle-night-shift" onchange="app.toggleNightShift(this.checked)">
+                                    <span class="slider-round"></span>
+                                </label>
+                            </div>
+
+                            <div class="toggle-row mt-4">
+                                <div>
+                                    <strong class="text-primary">Background Aurora Glows</strong>
+                                    <p class="text-sub" style="font-size:12px;">Enable floating background light glows.</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="toggle-aurora" checked onchange="app.toggleAurora(this.checked)">
+                                    <span class="slider-round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Export / Reset -->
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-database text-amber"></i> Data & Storage Management</h3>
+                            <p class="text-sub">Manage local storage data</p>
+                        </div>
+                        <div class="data-actions">
+                            <button class="btn-outline" onclick="app.exportJournalJSON()"><i class="fa-solid fa-download"></i> Export Journal Data (JSON)</button>
+                            <button class="btn-outline text-rose" onclick="app.resetAppData()"><i class="fa-solid fa-trash text-rose"></i> Reset All Stored Application Data</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Main Application JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
