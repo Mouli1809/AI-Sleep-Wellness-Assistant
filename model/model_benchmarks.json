@@ -1,26 +1,18 @@
 {
-  "HistGradientBoosting": {
-    "accuracy": 81.33,
-    "f1_score": 81.56,
-    "precision": 82.17,
-    "recall": 81.33
+  "Spline Logistic Regression": {
+    "CV Accuracy": 88.12,
+    "Test Accuracy": 86.6
+  },
+  "Extra Trees": {
+    "CV Accuracy": 83.67,
+    "Test Accuracy": 84.4
   },
   "Random Forest": {
-    "accuracy": 78.67,
-    "f1_score": 78.81,
-    "precision": 79.45,
-    "recall": 78.67
+    "CV Accuracy": 83.4,
+    "Test Accuracy": 82.7
   },
-  "Decision Tree": {
-    "accuracy": 73.33,
-    "f1_score": 73.52,
-    "precision": 73.86,
-    "recall": 73.33
-  },
-  "Logistic Regression": {
-    "accuracy": 71.67,
-    "f1_score": 71.9,
-    "precision": 72.88,
-    "recall": 71.67
+  "HistGradientBoosting": {
+    "CV Accuracy": 85.3,
+    "Test Accuracy": 86.4
   }
 }

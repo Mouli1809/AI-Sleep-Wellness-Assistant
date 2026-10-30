@@ -1,0 +1,47 @@
+{
+  "model_name": "HistGradientBoosting Sleep Quality Classifier",
+  "algorithm": "HistGradientBoosting",
+  "accuracy": 0.8133,
+  "train_accuracy": 1.0,
+  "dataset_size": 1500,
+  "train_size": 1200,
+  "test_size": 300,
+  "features": [
+    "sleep_duration",
+    "bedtime_hour",
+    "wake_hour",
+    "previous_sleep_duration",
+    "stress_level",
+    "physical_activity",
+    "hydration",
+    "screen_time",
+    "noise_level",
+    "temperature_comfort",
+    "light_level",
+    "bed_comfort"
+  ],
+  "target": "sleep_quality",
+  "classes": [
+    "Average",
+    "Good",
+    "Poor"
+  ],
+  "feature_importances": {
+    "sleep_duration": 0.29877088630326576,
+    "stress_level": 0.2923332975264558,
+    "screen_time": 0.13024250179805036,
+    "physical_activity": 0.04668747424846666,
+    "temperature_comfort": 0.012197300867653846,
+    "hydration": 0.011720630763581555,
+    "wake_hour": 0.008980671711120033,
+    "light_level": 0.0033280439032987857,
+    "noise_level": 0.0031783458787380675,
+    "previous_sleep_duration": 0.0017009468627753321,
+    "bedtime_hour": -0.0015648533212705984,
+    "bed_comfort": -0.0024838934677325064
+  },
+  "model_selection_metric": "weighted F1 on stratified 20% hold-out test set",
+  "trained_at": "2026-09-19 19:45:49",
+  "sklearn_version": "1.9.1",
+  "dataset_type": "synthetic demonstration dataset"
+}

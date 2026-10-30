@@ -1,60 +1,80 @@
+
 import pandas as pd
 import numpy as np
 import os
 
-def generate_sleep_dataset(num_rows=1500, random_seed=42):
-    np.random.seed(random_seed)
-    
-    # 1. Feature generation
-    sleep_duration = np.round(np.random.normal(loc=7.2, scale=1.3, size=num_rows), 1)
-    sleep_duration = np.clip(sleep_duration, 4.0, 10.0)
-    
-    bedtime_hour = np.round(np.random.uniform(21.0, 26.5, size=num_rows) % 24, 1) # 21.0 (9 PM) to 2.5 (2:30 AM)
+
+def generate_sleep_dataset(num_rows=5000, random_seed=42):
+    rng = np.random.default_rng(random_seed)
+
+    # 1. Generate input features
+    sleep_duration = np.round(
+        np.clip(rng.normal(7.2, 1.8, num_rows), 2.0, 14.0), 1
+    )
+
+    bedtime_hour = np.round(rng.uniform(21.0, 26.5, num_rows) % 24, 1)
     wake_hour = np.round((bedtime_hour + sleep_duration) % 24, 1)
-    
-    previous_sleep_duration = np.round(np.random.normal(loc=7.1, scale=1.2, size=num_rows), 1)
-    previous_sleep_duration = np.clip(previous_sleep_duration, 4.0, 10.0)
-    
-    stress_level = np.random.randint(1, 11, size=num_rows)
-    physical_activity = np.random.randint(0, 121, size=num_rows) # minutes
-    hydration = np.round(np.random.uniform(0.8, 4.0, size=num_rows), 1) # liters
-    screen_time = np.random.randint(0, 181, size=num_rows) # minutes before bed
-    
-    noise_level = np.random.randint(1, 11, size=num_rows) # 1 quiet, 10 loud
-    temperature_comfort = np.random.randint(1, 11, size=num_rows) # 1 uncomfortable, 10 ideal
-    light_level = np.random.randint(1, 11, size=num_rows) # 1 dark, 10 bright
-    bed_comfort = np.random.randint(1, 11, size=num_rows) # 1 bad, 10 great
-    
-    # 2. Derive target sleep_quality (Poor / Average / Good) with realistic physiological rules + noise
-    quality_labels = []
-    
-    for i in range(num_rows):
-        dur = sleep_duration[i]
-        dur_score = 100 - abs(dur - 8.0) * 16.0
-        
-        stress_pen = stress_level[i] * 4.5
-        screen_pen = (screen_time[i] / 60.0) * 8.0
-        
-        env_score = (
-            (11 - noise_level[i]) * 2.5 +
-            temperature_comfort[i] * 2.5 +
-            (11 - light_level[i]) * 2.5 +
-            bed_comfort[i] * 2.5
-        ) # range ~ 10 to 100
-        
-        act_bonus = min(12.0, physical_activity[i] * 0.1)
-        hyd_bonus = min(8.0, hydration[i] * 2.5)
-        
-        composite = dur_score - stress_pen - screen_pen + (env_score * 0.25) + act_bonus + hyd_bonus
-        composite += np.random.normal(0, 5) # add realistic random variance
-        
-        if composite >= 74:
-            quality_labels.append("Good")
-        elif composite >= 52:
-            quality_labels.append("Average")
-        else:
-            quality_labels.append("Poor")
-            
+
+    previous_sleep_duration = np.round(
+        np.clip(rng.normal(7.1, 1.5, num_rows), 2.0, 14.0), 1
+    )
+
+    stress_level = rng.integers(1, 11, num_rows)
+    physical_activity = rng.integers(0, 121, num_rows)
+    hydration = np.round(rng.uniform(0.5, 4.0, num_rows), 1)
+    screen_time = rng.integers(0, 181, num_rows)
+
+    noise_level = rng.integers(1, 11, num_rows)
+    temperature_comfort = rng.integers(1, 11, num_rows)
+    light_level = rng.integers(1, 11, num_rows)
+    bed_comfort = rng.integers(1, 11, num_rows)
+
+    # 2. Calculate sleep wellness score
+    duration_score = 100 - np.abs(sleep_duration - 8.0) * 17
+    previous_score = 100 - np.abs(previous_sleep_duration - 8.0) * 7
+
+    stress_penalty = stress_level * 4.5
+    screen_penalty = screen_time * 0.16
+
+    bedtime_penalty = np.where(
+        bedtime_hour >= 24,
+        (bedtime_hour - 24) * 2.0,
+        np.maximum(0, bedtime_hour - 23) * 2.0
+    )
+
+    environment_score = (
+        (11 - noise_level) * 2.0
+        + temperature_comfort * 2.0
+        + (11 - light_level) * 2.0
+        + bed_comfort * 2.0
+    )
+
+    activity_bonus = np.minimum(12, physical_activity * 0.1)
+    hydration_bonus = np.minimum(8, hydration * 2.0)
+
+    score = (
+        duration_score * 0.45
+        + previous_score * 0.10
+        - stress_penalty * 0.75
+        - screen_penalty * 0.90
+        + environment_score * 0.20
+        + activity_bonus
+        + hydration_bonus
+        - bedtime_penalty
+    )
+
+    # Penalize unusually short or long sleep
+    score -= np.where(sleep_duration < 4.0, 30, 0)
+    score -= np.where(sleep_duration > 10.0, 25, 0)
+
+    # Small random variation
+    score += rng.normal(0, 3, num_rows)
+
+    # 3. Assign target classes
+    labels = np.where(
+    score >= 38, "Good",
+    np.where(score >= 20, "Average", "Poor")
+)
     df = pd.DataFrame({
         "sleep_duration": sleep_duration,
         "bedtime_hour": bedtime_hour,
@@ -68,15 +88,26 @@ def generate_sleep_dataset(num_rows=1500, random_seed=42):
         "temperature_comfort": temperature_comfort,
         "light_level": light_level,
         "bed_comfort": bed_comfort,
-        "sleep_quality": quality_labels
+        "sleep_quality": labels
     })
-    
-    os.makedirs("data", exist_ok=True)
-    csv_path = os.path.join("data", "sleep_dataset.csv")
+
+    project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    data_dir = os.path.join(project_dir, "data")
+    os.makedirs(data_dir, exist_ok=True)
+
+    csv_path = os.path.join(data_dir, "sleep_dataset.csv")
     df.to_csv(csv_path, index=False)
-    print(f"Dataset created successfully with {len(df)} records at {csv_path}")
-    print("Class distribution:\n", df["sleep_quality"].value_counts())
+
+    print("Dataset generated successfully!")
+    print("Records:", len(df))
+    print("Columns:", len(df.columns))
+    print("\nClass distribution:")
+    print(df["sleep_quality"].value_counts())
+    print("\nSleep duration range:")
+    print(df["sleep_duration"].min(), "to", df["sleep_duration"].max())
+
     return csv_path
+
 
 if __name__ == "__main__":
     generate_sleep_dataset()

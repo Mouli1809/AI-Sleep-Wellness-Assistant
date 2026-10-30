@@ -1,0 +1,18 @@
+{
+  "Spline Logistic Regression": {
+    "CV Accuracy": 88.12,
+    "Test Accuracy": 86.6
+  },
+  "Extra Trees": {
+    "CV Accuracy": 83.67,
+    "Test Accuracy": 84.4
+  },
+  "Random Forest": {
+    "CV Accuracy": 83.4,
+    "Test Accuracy": 82.7
+  },
+  "HistGradientBoosting": {
+    "CV Accuracy": 85.3,
+    "Test Accuracy": 86.4
+  }
+}

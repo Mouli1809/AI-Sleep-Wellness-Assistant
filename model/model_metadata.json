@@ -1,11 +1,20 @@
 {
-  "model_name": "HistGradientBoosting Sleep Quality Classifier",
-  "algorithm": "HistGradientBoosting",
-  "accuracy": 0.8133,
-  "train_accuracy": 1.0,
-  "dataset_size": 1500,
-  "train_size": 1200,
-  "test_size": 300,
+  "model_name": "Spline Logistic Regression Sleep Quality Classifier",
+  "algorithm": "Spline Logistic Regression",
+  "accuracy": 0.866,
+  "accuracy_ci95": [
+    0.8449,
+    0.8871
+  ],
+  "cv_accuracy_mean": 0.8812,
+  "cv_accuracy_std": 0.0106,
+  "train_accuracy": 0.8865,
+  "f1_score": 0.8665,
+  "precision": 0.8677,
+  "recall": 0.866,
+  "dataset_size": 5000,
+  "train_size": 4000,
+  "test_size": 1000,
   "features": [
     "sleep_duration",
     "bedtime_hour",
@@ -26,22 +35,52 @@
     "Good",
     "Poor"
   ],
-  "feature_importances": {
-    "sleep_duration": 0.29877088630326576,
-    "stress_level": 0.2923332975264558,
-    "screen_time": 0.13024250179805036,
-    "physical_activity": 0.04668747424846666,
-    "temperature_comfort": 0.012197300867653846,
-    "hydration": 0.011720630763581555,
-    "wake_hour": 0.008980671711120033,
-    "light_level": 0.0033280439032987857,
-    "noise_level": 0.0031783458787380675,
-    "previous_sleep_duration": 0.0017009468627753321,
-    "bedtime_hour": -0.0015648533212705984,
-    "bed_comfort": -0.0024838934677325064
+  "feature_importances": {},
+  "cv_benchmarks": {
+    "Spline Logistic Regression": {
+      "cv_accuracy_mean": 0.88125,
+      "cv_accuracy_std": 0.010636023693091322,
+      "test_accuracy": 0.866
+    },
+    "Extra Trees": {
+      "cv_accuracy_mean": 0.83675,
+      "cv_accuracy_std": 0.009307255234493135,
+      "test_accuracy": 0.844,
+      "best_parameters": {
+        "classifier__n_estimators": 300,
+        "classifier__min_samples_split": 8,
+        "classifier__min_samples_leaf": 1,
+        "classifier__max_features": 0.8,
+        "classifier__max_depth": 18
+      }
+    },
+    "Random Forest": {
+      "cv_accuracy_mean": 0.834,
+      "cv_accuracy_std": 0.012308533625091166,
+      "test_accuracy": 0.827,
+      "best_parameters": {
+        "classifier__n_estimators": 200,
+        "classifier__min_samples_split": 2,
+        "classifier__min_samples_leaf": 1,
+        "classifier__max_features": 0.8,
+        "classifier__max_depth": 12
+      }
+    },
+    "HistGradientBoosting": {
+      "cv_accuracy_mean": 0.8530000000000001,
+      "cv_accuracy_std": 0.0037583240945932243,
+      "test_accuracy": 0.864,
+      "best_parameters": {
+        "classifier__min_samples_leaf": 20,
+        "classifier__max_leaf_nodes": 15,
+        "classifier__max_iter": 300,
+        "classifier__learning_rate": 0.05,
+        "classifier__l2_regularization": 0.1
+      }
+    }
   },
-  "model_selection_metric": "weighted F1 on stratified 20% hold-out test set",
-  "trained_at": "2026-09-19 19:45:49",
+  "model_selection_metric": "5-fold stratified CV accuracy on training split",
+  "trained_at": "2026-10-30 11:02:47",
   "sklearn_version": "1.9.1",
   "dataset_type": "synthetic demonstration dataset"
 }
