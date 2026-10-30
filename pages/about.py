@@ -51,32 +51,56 @@ def render():
         st.info("Model metadata not found. Train the model by running `python model/train_model.py`.")
         
     # Benchmarking Comparison Section
+       # Benchmarking Comparison Section
     bench_path = os.path.join("model", "model_benchmarks.json")
+
     if os.path.exists(bench_path):
         st.markdown("---")
         st.subheader("📊 Multi-Algorithm Benchmark Comparison")
+
         with open(bench_path, "r") as f:
             bench_data = json.load(f)
-            
-        bench_df = pd.DataFrame(bench_data).T.reset_index()
-        bench_df.columns = ["Algorithm", "Accuracy (%)", "F1-Score (%)", "Precision (%)", "Recall (%)"]
-        
-        st.dataframe(bench_df, use_container_width=True)
-        
-        import plotly.express as px
-        fig_bench = px.bar(
-            bench_df, x="Algorithm", y="Accuracy (%)",
-            color="Algorithm", text="Accuracy (%)",
-            title="Accuracy Comparison Across ML Classification Algorithms",
-            color_discrete_sequence=["#6366F1", "#10B981", "#F59E0B", "#EF4444"]
+
+        bench_df = pd.DataFrame.from_dict(bench_data, orient="index")
+        bench_df.index.name = "Algorithm"
+        bench_df = bench_df.reset_index()
+
+        bench_df = bench_df.rename(columns={
+            "CV Accuracy": "CV Accuracy (%)",
+            "Test Accuracy": "Test Accuracy (%)"
+        })
+
+        st.dataframe(
+            bench_df.round(2),
+            use_container_width=True,
+            hide_index=True
         )
+
+        import plotly.express as px
+
+        fig_bench = px.bar(
+            bench_df,
+            x="Algorithm",
+            y="Test Accuracy (%)",
+            color="Algorithm",
+            text="Test Accuracy (%)",
+            title="Test Accuracy Comparison Across ML Algorithms",
+            color_discrete_sequence=[
+                "#6366F1", "#10B981", "#F59E0B", "#EF4444"
+            ]
+        )
+
         fig_bench.update_layout(
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(15, 23, 42, 0.5)",
             font=dict(color="#E2E8F0"),
             xaxis=dict(gridcolor="rgba(255,255,255,0.08)"),
-            yaxis=dict(gridcolor="rgba(255,255,255,0.08)", range=[0, 100])
+            yaxis=dict(
+                gridcolor="rgba(255,255,255,0.08)",
+                range=[0, 100]
+            )
         )
+
         st.plotly_chart(fig_bench, use_container_width=True)
         
     st.markdown("---")

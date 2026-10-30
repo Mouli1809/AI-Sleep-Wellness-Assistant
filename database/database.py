@@ -3,7 +3,8 @@ import sqlite3
 import pandas as pd
 from datetime import datetime, timedelta
 
-DEFAULT_DB_PATH = os.path.join("database", "sleep_wellness.db")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DEFAULT_DB_PATH = os.path.join(BASE_DIR, "database", "sleep_wellness.db")
 
 def get_db_connection(db_path=DEFAULT_DB_PATH):
     os.makedirs(os.path.dirname(db_path), exist_ok=True)
